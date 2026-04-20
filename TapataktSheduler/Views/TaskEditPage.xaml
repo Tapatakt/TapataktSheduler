@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TapataktSheduler.Views.TaskEditPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:TapataktSheduler.Models"
+    xmlns:vm="clr-namespace:TapataktSheduler.ViewModels"
+    Title="Редактирование дела">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Label FontAttributes="Bold" FontSize="18" Text="Название" />
+            <Entry x:Name="NameEntry" FontSize="18" Text="{Binding Name}" />
+
+            <Label FontAttributes="Bold" FontSize="18" Text="Время напоминания по умолчанию" />
+            <TimePicker FontSize="18" Time="{Binding DefaultReminderTime}" />
+
+            <Label FontAttributes="Bold" FontSize="18" Text="Повторять каждые (минут)" />
+            <Entry x:Name="FrequencyEntry" FontSize="18" Keyboard="Numeric" Text="{Binding RepeatFrequencyMinutes}" />
+
+            <!-- Привязка к типам дней -->
+            <Label
+                Margin="0,10,0,0"
+                FontAttributes="Bold"
+                FontSize="18"
+                Text="Привязано к типам дней" />
+            <VerticalStackLayout BindableLayout.ItemsSource="{Binding TypeBindings}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="models:TaskTypeBindingItem">
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10" Padding="8,4">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TaskEditViewModel}}, Path=EditDayTypeCommand}" CommandParameter="{Binding DayTypeId}" />
+                            </Grid.GestureRecognizers>
+                            <Label FontSize="20" Text="{Binding DayTypeName}" VerticalOptions="Center" />
+                            <TimePicker Grid.Column="1" FontSize="18" Time="{Binding ReminderTime}" />
+                            <Button
+                                Grid.Column="2"
+                                BackgroundColor="Red"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TaskEditViewModel}}, Path=RemoveTypeBindingCommand}"
+                                CommandParameter="{Binding .}"
+                                CornerRadius="4"
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                HeightRequest="28"
+                                Padding="0"
+                                Text="✕"
+                                TextColor="White"
+                                WidthRequest="28" />
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+            <Button
+                Command="{Binding AddTypeBindingCommand}"
+                FontSize="18"
+                Text="Добавить тип дня" />
+
+            <!-- Привязка к датам -->
+            <Label
+                Margin="0,10,0,0"
+                FontAttributes="Bold"
+                FontSize="18"
+                Text="Привязано к датам" />
+            <VerticalStackLayout BindableLayout.ItemsSource="{Binding DayBindings}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="models:TaskDayBindingItem">
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10" Padding="8,4">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TaskEditViewModel}}, Path=EditDayCommand}" CommandParameter="{Binding Date}" />
+                            </Grid.GestureRecognizers>
+                            <Label FontSize="20" Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}" VerticalOptions="Center" />
+                            <TimePicker Grid.Column="1" FontSize="18" Time="{Binding ReminderTime}" />
+                            <Button
+                                Grid.Column="2"
+                                BackgroundColor="Red"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TaskEditViewModel}}, Path=RemoveDayBindingCommand}"
+                                CommandParameter="{Binding .}"
+                                CornerRadius="4"
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                HeightRequest="28"
+                                Padding="0"
+                                Text="✕"
+                                TextColor="White"
+                                WidthRequest="28" />
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+            <Button
+                Command="{Binding AddDayBindingCommand}"
+                FontSize="18"
+                Text="Добавить дату" />
+
+            <Button
+                BackgroundColor="Red"
+                Command="{Binding DeleteCommand}"
+                FontAttributes="Bold"
+                FontSize="18"
+                Text="Удалить"
+                TextColor="White" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

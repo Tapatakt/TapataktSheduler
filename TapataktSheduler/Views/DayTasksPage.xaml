@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TapataktSheduler.Views.DayTasksPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:TapataktSheduler.Models"
+    xmlns:vm="clr-namespace:TapataktSheduler.ViewModels"
+    Title="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}">
+
+    <!-- Детали дня: комментарий, тип и списки дел -->
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Label FontAttributes="Bold" FontSize="18" Text="Комментарий к дню" />
+            <Editor
+                x:Name="CommentEditor"
+                AutoSize="TextChanges"
+                FontSize="18"
+                Placeholder="Введите комментарий..."
+                Text="{Binding Comment}" />
+
+            <Label FontAttributes="Bold" FontSize="18" Text="Тип дня" />
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                <Picker
+                    x:Name="DayTypePicker"
+                    FontSize="18"
+                    ItemDisplayBinding="{Binding Name}"
+                    ItemsSource="{Binding DayTypes}"
+                    SelectedItem="{Binding SelectedDayType}" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding ClearDayTypeCommand}"
+                    Text="×" />
+            </Grid>
+
+            <Button
+                Command="{Binding CreateTaskCommand}"
+                FontSize="18"
+                Text="Создать дело" />
+
+            <!-- Дела на этот день (прямые привязки) -->
+            <Label
+                Margin="0,10,0,0"
+                FontAttributes="Bold"
+                FontSize="18"
+                Text="Дела на этот день" />
+            <VerticalStackLayout BindableLayout.ItemsSource="{Binding DirectTasks}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="models:TaskDisplayItem">
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10" Padding="8,4">
+                            <Label FontSize="20" Text="{Binding Name}" VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DayTasksViewModel}}, Path=EditTaskCommand}" CommandParameter="{Binding TaskId}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Label
+                                Grid.Column="1"
+                                FontSize="18"
+                                Text="{Binding ReminderTime, StringFormat='{}{0:hh\:mm}'}"
+                                TextColor="Gray"
+                                VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DayTasksViewModel}}, Path=EditDirectTaskTimeCommand}" CommandParameter="{Binding .}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Button
+                                Grid.Column="2"
+                                BackgroundColor="Red"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DayTasksViewModel}}, Path=DetachDirectTaskCommand}"
+                                CommandParameter="{Binding .}"
+                                CornerRadius="4"
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                HeightRequest="28"
+                                Padding="0"
+                                Text="✕"
+                                TextColor="White"
+                                WidthRequest="28" />
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+            <Button
+                Command="{Binding AddExistingTaskCommand}"
+                FontSize="18"
+                Text="Добавить существующее дело" />
+
+            <!-- Дела по типу дня -->
+            <Label
+                Margin="0,10,0,0"
+                FontAttributes="Bold"
+                FontSize="18"
+                Text="Дела по типу дня" />
+            <VerticalStackLayout BindableLayout.ItemsSource="{Binding TypeTasks}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="models:TaskDisplayItem">
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10" Padding="8,4">
+                            <Label FontSize="20" Text="{Binding Name}" VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DayTasksViewModel}}, Path=EditTaskCommand}" CommandParameter="{Binding TaskId}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Label
+                                Grid.Column="1"
+                                FontSize="18"
+                                Text="{Binding ReminderTime, StringFormat='{}{0:hh\:mm}'}"
+                                TextColor="Gray"
+                                VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DayTasksViewModel}}, Path=EditTypeTaskTimeCommand}" CommandParameter="{Binding .}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Button
+                                Grid.Column="2"
+                                BackgroundColor="Red"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DayTasksViewModel}}, Path=DetachTypeTaskCommand}"
+                                CommandParameter="{Binding .}"
+                                CornerRadius="4"
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                HeightRequest="28"
+                                Padding="0"
+                                Text="✕"
+                                TextColor="White"
+                                WidthRequest="28" />
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

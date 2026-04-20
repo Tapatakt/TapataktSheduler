@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TapataktSheduler.Views.MainMenuPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:TapataktSheduler.Models"
+    xmlns:vm="clr-namespace:TapataktSheduler.ViewModels"
+    x:DataType="vm:MainMenuViewModel">
+
+    <!-- Главное меню: точка входа в приложение -->
+    <VerticalStackLayout Padding="30" Spacing="20">
+        <Label
+            FontAttributes="Bold"
+            FontSize="28"
+            HorizontalOptions="Center"
+            Text="TapataktSheduler" />
+
+        <Button
+            Command="{Binding GoToCalendarCommand}"
+            FontSize="18"
+            Text="Календарь" />
+
+        <Button
+            Command="{Binding GoToDayTypesCommand}"
+            FontSize="18"
+            Text="Типы дней" />
+
+        <Button
+            Command="{Binding GoToTasksCommand}"
+            FontSize="18"
+            Text="Дела" />
+
+        <Button
+            Command="{Binding GoToSettingsCommand}"
+            FontSize="18"
+            Text="Настройки" />
+
+        <Label
+            FontAttributes="Bold"
+            FontSize="18"
+            Text="Дела на сегодня" />
+
+        <Label
+            FontSize="16"
+            Text="{Binding TodayComment}"
+            TextColor="Gray" />
+
+        <CollectionView ItemsSource="{Binding TodayTasks}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:TodayTaskItem">
+                    <Grid ColumnDefinitions="*,Auto" Padding="0,5">
+                        <VerticalStackLayout Grid.Column="0">
+                            <VerticalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainMenuViewModel}}, Path=OpenTaskEditCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </VerticalStackLayout.GestureRecognizers>
+
+                            <Label FontSize="20" Text="{Binding Name}">
+                                <Label.Triggers>
+                                    <DataTrigger Binding="{Binding IsCompleted}" TargetType="Label" Value="True">
+                                        <Setter Property="TextDecorations" Value="Strikethrough" />
+                                        <Setter Property="TextColor" Value="Gray" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+
+                            <Label
+                                FontSize="18"
+                                Text="{Binding ReminderTime, StringFormat='{}{0:hh\\:mm}', TargetNullValue=''}"
+                                TextColor="Gray" />
+                        </VerticalStackLayout>
+
+                        <Button
+                            Grid.Column="1"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainMenuViewModel}}, Path=ToggleTaskCompletionCommand}"
+                            CommandParameter="{Binding .}"
+                            FontSize="28"
+                            Padding="10,0"
+                            Text="{Binding CheckboxSymbol}"
+                            TextColor="Black" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+
+</ContentPage>

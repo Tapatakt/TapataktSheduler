@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TapataktSheduler.Views.CalendarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:TapataktSheduler.Models"
+    xmlns:vm="clr-namespace:TapataktSheduler.ViewModels"
+    Title="Календарь">
+
+    <!-- Календарь с переключением месяцев -->
+    <Grid Padding="10" RowDefinitions="Auto,*">
+        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+            <Button
+                Command="{Binding PreviousMonthCommand}"
+                Padding="10"
+                Text="&lt;" />
+            <Label
+                Grid.Column="1"
+                FontAttributes="Bold"
+                FontSize="20"
+                HorizontalOptions="Center"
+                Text="{Binding CurrentMonth, StringFormat='{0:MMMM yyyy}'}"
+                VerticalOptions="Center" />
+            <Button
+                Grid.Column="2"
+                Command="{Binding NextMonthCommand}"
+                Padding="10"
+                Text="&gt;" />
+        </Grid>
+
+        <CollectionView
+            Grid.Row="1"
+            Margin="0,20,0,0"
+            ItemsSource="{Binding Days}"
+            SelectionChanged="OnSelectionChanged"
+            SelectionMode="Single">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout HorizontalItemSpacing="2" Orientation="Vertical" Span="7" VerticalItemSpacing="2" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:CalendarDay">
+                    <Grid Padding="8" BackgroundColor="{Binding BackgroundColor}">
+                        <VerticalStackLayout Spacing="2">
+                            <Label
+                                FontAttributes="{Binding DayFontAttributes}"
+                                FontSize="{Binding DayFontSize}"
+                                HorizontalOptions="Center"
+                                Text="{Binding Date.Day}"
+                                TextColor="{Binding TextColor}" />
+                            <Label
+                                FontSize="10"
+                                HorizontalOptions="Center"
+                                LineBreakMode="TailTruncation"
+                                Text="{Binding DayTypeName}"
+                                TextColor="Gray" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>

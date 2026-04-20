@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TapataktSheduler.Views.TaskCreatePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Новое дело">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Label FontAttributes="Bold" FontSize="18" Text="Название" />
+            <Entry FontSize="18" Placeholder="Введите название..." Text="{Binding Name}" />
+
+            <Label FontAttributes="Bold" FontSize="18" Text="Время напоминания по умолчанию" />
+            <TimePicker FontSize="18" Time="{Binding DefaultReminderTime}" />
+
+            <Label FontAttributes="Bold" FontSize="18" Text="Повторять каждые (минут)" />
+            <Entry FontSize="18" Keyboard="Numeric" Text="{Binding RepeatFrequencyMinutes}" />
+
+            <Button
+                Command="{Binding CreateCommand}"
+                FontSize="18"
+                Text="Создать" />
+
+            <Button
+                Command="{Binding CreateAndEditCommand}"
+                FontSize="18"
+                Text="Создать и добавить привязки" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

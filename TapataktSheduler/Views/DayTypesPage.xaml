@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TapataktSheduler.Views.DayTypesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:TapataktSheduler.Models"
+    xmlns:vm="clr-namespace:TapataktSheduler.ViewModels"
+    Title="Типы дней">
+
+    <!-- Список типов дней: тап по строке открывает редактор -->
+    <Grid Padding="15" RowDefinitions="*,Auto">
+        <CollectionView ItemsSource="{Binding DayTypes}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:DayType">
+                    <Grid Padding="0,15">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DayTypesViewModel}}, Path=EditDayTypeCommand}" CommandParameter="{Binding .}" />
+                        </Grid.GestureRecognizers>
+                        <Label
+                            FontSize="24"
+                            Text="{Binding Name}"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button
+            Grid.Row="1"
+            Margin="0,15,0,0"
+            Command="{Binding AddDayTypeCommand}"
+            FontSize="18"
+            Text="Добавить тип дня" />
+    </Grid>
+
+</ContentPage>

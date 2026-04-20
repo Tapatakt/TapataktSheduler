@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TapataktSheduler.Views.DayTypeCreatePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Новый тип дня">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Label FontAttributes="Bold" FontSize="18" Text="Название типа дня" />
+            <Entry FontSize="18" Placeholder="Введите название..." Text="{Binding Name}" />
+
+            <Button
+                Command="{Binding CreateCommand}"
+                FontSize="18"
+                Text="Создать" />
+
+            <Button
+                Command="{Binding CreateAndEditCommand}"
+                FontSize="18"
+                Text="Создать и добавить дела" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
