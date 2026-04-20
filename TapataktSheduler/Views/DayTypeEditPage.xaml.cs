@@ -53,8 +53,6 @@ public partial class DayTypeEditPage : ContentPage
     /// Сохраняет название при потере фокуса.
     /// </summary>
     private void OnNameEntryUnfocused(object? sender, FocusEventArgs e)
-    {
-        _viewModel.AutoSave();
-    }
+        => _viewModel.AutoSave();
 
 }

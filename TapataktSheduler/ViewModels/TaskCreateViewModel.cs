@@ -8,12 +8,23 @@ namespace TapataktSheduler.ViewModels;
 /// <summary>
 /// ViewModel экрана создания нового дела.
 /// </summary>
-public sealed partial class TaskCreateViewModel : BaseViewModel
+/// <remarks>
+/// Создаёт новый экземпляр ViewModel.
+/// </remarks>
+/// <param name="taskService">Сервис дел.</param>
+/// <param name="taskTypeBindingService">Сервис привязок к типам.</param>
+/// <param name="taskDayBindingService">Сервис привязок к датам.</param>
+/// <param name="navigationService">Сервис навигации.</param>
+public sealed partial class TaskCreateViewModel(
+    ITaskService taskService,
+    ITaskTypeBindingService taskTypeBindingService,
+    ITaskDayBindingService taskDayBindingService,
+    INavigationService navigationService) : BaseViewModel
 {
-    private readonly ITaskService _taskService;
-    private readonly ITaskTypeBindingService _taskTypeBindingService;
-    private readonly ITaskDayBindingService _taskDayBindingService;
-    private readonly INavigationService _navigationService;
+    private readonly ITaskService _taskService = taskService;
+    private readonly ITaskTypeBindingService _taskTypeBindingService = taskTypeBindingService;
+    private readonly ITaskDayBindingService _taskDayBindingService = taskDayBindingService;
+    private readonly INavigationService _navigationService = navigationService;
 
     private DateTime? _prefillDate;
     private Guid? _prefillDayTypeId;
@@ -36,24 +47,6 @@ public sealed partial class TaskCreateViewModel : BaseViewModel
     [ObservableProperty]
     private int _repeatFrequencyMinutes = 5;
 
-    /// <summary>
-    /// Создаёт новый экземпляр ViewModel.
-    /// </summary>
-    /// <param name="taskService">Сервис дел.</param>
-    /// <param name="taskTypeBindingService">Сервис привязок к типам.</param>
-    /// <param name="taskDayBindingService">Сервис привязок к датам.</param>
-    /// <param name="navigationService">Сервис навигации.</param>
-    public TaskCreateViewModel(
-        ITaskService taskService,
-        ITaskTypeBindingService taskTypeBindingService,
-        ITaskDayBindingService taskDayBindingService,
-        INavigationService navigationService)
-    {
-        _taskService = taskService;
-        _taskTypeBindingService = taskTypeBindingService;
-        _taskDayBindingService = taskDayBindingService;
-        _navigationService = navigationService;
-    }
 
     /// <summary>
     /// Инициализирует ViewModel с предзаполненными параметрами.

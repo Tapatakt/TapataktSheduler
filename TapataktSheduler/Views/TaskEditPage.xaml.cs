@@ -47,16 +47,12 @@ public partial class TaskEditPage : ContentPage
     /// Сохраняет дело при потере фокуса полем названия.
     /// </summary>
     private void OnNameEntryUnfocused(object? sender, FocusEventArgs e)
-    {
-        _viewModel.AutoSave();
-    }
+        => _viewModel.AutoSave();
 
     /// <summary>
     /// Сохраняет дело при потере фокуса полем частоты повторов.
     /// </summary>
     private void OnFrequencyEntryUnfocused(object? sender, FocusEventArgs e)
-    {
-        _viewModel.AutoSave();
-    }
+        => _viewModel.AutoSave();
 
 }

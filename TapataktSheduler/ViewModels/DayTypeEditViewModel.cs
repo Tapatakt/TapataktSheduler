@@ -10,13 +10,26 @@ namespace TapataktSheduler.ViewModels;
 /// ViewModel экрана редактирования типа дня.
 /// Изменения названия сохраняются автоматически.
 /// </summary>
-public sealed partial class DayTypeEditViewModel : BaseViewModel
+/// <remarks>
+/// Создаёт новый экземпляр ViewModel.
+/// </remarks>
+/// <param name="dayTypeService">Сервис типов дней.</param>
+/// <param name="taskTypeBindingService">Сервис привязок к типам.</param>
+/// <param name="taskService">Сервис дел.</param>
+/// <param name="navigationService">Сервис навигации.</param>
+/// <param name="dialogService">Сервис диалогов.</param>
+public sealed partial class DayTypeEditViewModel(
+    IDayTypeService dayTypeService,
+    ITaskTypeBindingService taskTypeBindingService,
+    ITaskService taskService,
+    INavigationService navigationService,
+    IDialogService dialogService) : BaseViewModel
 {
-    private readonly IDayTypeService _dayTypeService;
-    private readonly ITaskTypeBindingService _taskTypeBindingService;
-    private readonly ITaskService _taskService;
-    private readonly INavigationService _navigationService;
-    private readonly IDialogService _dialogService;
+    private readonly IDayTypeService _dayTypeService = dayTypeService;
+    private readonly ITaskTypeBindingService _taskTypeBindingService = taskTypeBindingService;
+    private readonly ITaskService _taskService = taskService;
+    private readonly INavigationService _navigationService = navigationService;
+    private readonly IDialogService _dialogService = dialogService;
 
     /// <summary>
     /// Название типа дня.
@@ -39,27 +52,6 @@ public sealed partial class DayTypeEditViewModel : BaseViewModel
 
     private Guid? _dayTypeId;
 
-    /// <summary>
-    /// Создаёт новый экземпляр ViewModel.
-    /// </summary>
-    /// <param name="dayTypeService">Сервис типов дней.</param>
-    /// <param name="taskTypeBindingService">Сервис привязок к типам.</param>
-    /// <param name="taskService">Сервис дел.</param>
-    /// <param name="navigationService">Сервис навигации.</param>
-    /// <param name="dialogService">Сервис диалогов.</param>
-    public DayTypeEditViewModel(
-        IDayTypeService dayTypeService,
-        ITaskTypeBindingService taskTypeBindingService,
-        ITaskService taskService,
-        INavigationService navigationService,
-        IDialogService dialogService)
-    {
-        _dayTypeService = dayTypeService;
-        _taskTypeBindingService = taskTypeBindingService;
-        _taskService = taskService;
-        _navigationService = navigationService;
-        _dialogService = dialogService;
-    }
 
     /// <summary>
     /// Инициализирует ViewModel для указанного типа дня.
@@ -216,10 +208,9 @@ public sealed partial class DayTypeEditViewModel : BaseViewModel
             return;
 
         HashSet<Guid> attachedIds = AttachedTasks.Select(a => a.TaskId).ToHashSet();
-        List<PlannedTask> available = _taskService.GetPlannedTasks()
+        List<PlannedTask> available = [.. _taskService.GetPlannedTasks()
             .Where(t => !attachedIds.Contains(t.Id))
-            .OrderBy(t => t.Name)
-            .ToList();
+            .OrderBy(t => t.Name)];
 
         if (available.Count == 0)
             return;

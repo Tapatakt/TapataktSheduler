@@ -8,10 +8,15 @@ namespace TapataktSheduler.ViewModels;
 /// <summary>
 /// ViewModel экрана создания нового типа дня.
 /// </summary>
-public sealed partial class DayTypeCreateViewModel : BaseViewModel
+/// <remarks>
+/// Создаёт новый экземпляр ViewModel.
+/// </remarks>
+/// <param name="dayTypeService">Сервис типов дней.</param>
+/// <param name="navigationService">Сервис навигации.</param>
+public sealed partial class DayTypeCreateViewModel(IDayTypeService dayTypeService, INavigationService navigationService) : BaseViewModel
 {
-    private readonly IDayTypeService _dayTypeService;
-    private readonly INavigationService _navigationService;
+    private readonly IDayTypeService _dayTypeService = dayTypeService;
+    private readonly INavigationService _navigationService = navigationService;
 
     /// <summary>
     /// Название нового типа дня.
@@ -19,16 +24,6 @@ public sealed partial class DayTypeCreateViewModel : BaseViewModel
     [ObservableProperty]
     private string _name = string.Empty;
 
-    /// <summary>
-    /// Создаёт новый экземпляр ViewModel.
-    /// </summary>
-    /// <param name="dayTypeService">Сервис типов дней.</param>
-    /// <param name="navigationService">Сервис навигации.</param>
-    public DayTypeCreateViewModel(IDayTypeService dayTypeService, INavigationService navigationService)
-    {
-        _dayTypeService = dayTypeService;
-        _navigationService = navigationService;
-    }
 
     /// <summary>
     /// Создаёт тип дня и возвращается на предыдущий экран.

@@ -289,10 +289,9 @@ public sealed partial class DayTasksViewModel(
     private async Task AddExistingTaskAsync()
     {
         HashSet<Guid> attachedIds = DirectTasks.Select(t => t.TaskId).ToHashSet();
-        List<PlannedTask> available = _taskService.GetPlannedTasks()
+        List<PlannedTask> available = [.. _taskService.GetPlannedTasks()
             .Where(t => !attachedIds.Contains(t.Id))
-            .OrderBy(t => t.Name)
-            .ToList();
+            .OrderBy(t => t.Name)];
 
         if (available.Count == 0)
             return;

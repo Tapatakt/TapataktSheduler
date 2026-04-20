@@ -102,16 +102,12 @@ public sealed partial class TaskEditViewModel : BaseViewModel
     partial void OnDefaultReminderTimeChanged(TimeSpan value)
     {
         foreach (TaskTypeBindingItem item in TypeBindings)
-        {
             if (!item.IsCustomReminderTime)
                 item.SetReminderTime(value);
-        }
 
         foreach (TaskDayBindingItem item in DayBindings)
-        {
             if (!item.IsCustomReminderTime)
                 item.SetReminderTime(value);
-        }
 
         _lastDefaultReminderTime = value;
         AutoSave();
@@ -300,15 +296,11 @@ public sealed partial class TaskEditViewModel : BaseViewModel
     private void OnTypeBindingsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         if (e.OldItems != null)
-        {
             foreach (TaskTypeBindingItem item in e.OldItems)
                 item.PropertyChanged -= OnBindingItemPropertyChanged;
-        }
         if (e.NewItems != null)
-        {
             foreach (TaskTypeBindingItem item in e.NewItems)
                 item.PropertyChanged += OnBindingItemPropertyChanged;
-        }
         AutoSave();
     }
 
@@ -318,15 +310,11 @@ public sealed partial class TaskEditViewModel : BaseViewModel
     private void OnDayBindingsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         if (e.OldItems != null)
-        {
             foreach (TaskDayBindingItem item in e.OldItems)
                 item.PropertyChanged -= OnBindingItemPropertyChanged;
-        }
         if (e.NewItems != null)
-        {
             foreach (TaskDayBindingItem item in e.NewItems)
                 item.PropertyChanged += OnBindingItemPropertyChanged;
-        }
         AutoSave();
     }
 
@@ -337,9 +325,7 @@ public sealed partial class TaskEditViewModel : BaseViewModel
     {
         if (e.PropertyName == nameof(TaskTypeBindingItem.ReminderTime) ||
             e.PropertyName == nameof(TaskDayBindingItem.ReminderTime))
-        {
             AutoSave();
-        }
     }
 
     /// <summary>
@@ -356,7 +342,6 @@ public sealed partial class TaskEditViewModel : BaseViewModel
             _taskDayBindingService.DeleteTaskDayBinding(old.Id);
 
         foreach (TaskTypeBindingItem item in TypeBindings)
-        {
             _taskTypeBindingService.SaveTaskTypeBinding(new TaskTypeBinding
             {
                 Id = item.BindingId == Guid.Empty ? Guid.NewGuid() : item.BindingId,
@@ -364,10 +349,8 @@ public sealed partial class TaskEditViewModel : BaseViewModel
                 DayTypeId = item.DayTypeId,
                 ReminderTime = item.IsCustomReminderTime ? item.ReminderTime : null
             });
-        }
 
         foreach (TaskDayBindingItem item in DayBindings)
-        {
             _taskDayBindingService.SaveTaskDayBinding(new TaskDayBinding
             {
                 Id = item.BindingId == Guid.Empty ? Guid.NewGuid() : item.BindingId,
@@ -375,6 +358,5 @@ public sealed partial class TaskEditViewModel : BaseViewModel
                 Date = item.Date,
                 ReminderTime = item.IsCustomReminderTime ? item.ReminderTime : null
             });
-        }
     }
 }

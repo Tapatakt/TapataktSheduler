@@ -60,17 +60,13 @@ public partial class DayTasksPage : ContentPage
     /// Сохраняет день при смене типа через нативный Picker.
     /// </summary>
     private void OnDayTypePickerSelectedIndexChanged(object? sender, EventArgs e)
-    {
-        _viewModel.AutoSave();
-    }
+        => _viewModel.AutoSave();
 
     /// <summary>
     /// Сохраняет день при потере фокуса комментарием.
     /// </summary>
     private void OnCommentEditorUnfocused(object? sender, FocusEventArgs e)
-    {
-        _viewModel.AutoSave();
-    }
+        => _viewModel.AutoSave();
 
     /// <summary>
     /// Вызывает пересчёт размеров ScrollView после обновления списков BindableLayout.

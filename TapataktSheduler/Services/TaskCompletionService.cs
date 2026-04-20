@@ -29,10 +29,8 @@ public sealed class TaskCompletionService : ITaskCompletionService
     {
         DateTime normalized = date.Date;
         lock (_lock)
-        {
             if (!_completions.Any(c => c.TaskId == taskId && c.Date == normalized))
                 _completions.Add(new TaskCompletion { Id = Guid.NewGuid(), TaskId = taskId, Date = normalized });
-        }
     }
 
     /// <inheritdoc />
